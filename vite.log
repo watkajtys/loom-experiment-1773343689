@@ -1,12 +1,10 @@
---- Spawned at 1773355106.6460538 ---
-Killed
+--- Spawned at 1773355809.8098545 ---
 
 > app@0.0.0 dev
 > vite --host
 
 
-  VITE v6.4.1  ready in 172 ms
+  VITE v6.4.1  ready in 185 ms
 
   ➜  Local:   http://localhost:5173/
   ➜  Network: http://172.18.0.3:5173/
-Killed

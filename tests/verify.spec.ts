@@ -19,7 +19,7 @@ test('The application boots successfully and the PocketBase client can be instan
   expect(isPbDefined).toBe(true);
 
   // Take a screenshot after verification
-  await page.screenshot({ path: 'evidence.png' });
+  await page.screenshot({ path: 'evidence_old.png' });
 });
 
 test('PocketBase auth store changes automatically update the global user context and are accessible by all components.', async ({ page }) => {
@@ -45,7 +45,7 @@ test('PocketBase auth store changes automatically update the global user context
   });
 
   // Take a screenshot of the active feature
-  await page.screenshot({ path: 'evidence.png' });
+  await page.screenshot({ path: 'evidence_old.png' });
 });
 
 test('User fills out email/password and submits; authenticates successfully via PocketBase SDK and redirects to the authenticated app area.', async ({ page }) => {
@@ -96,7 +96,7 @@ test('User fills out email/password and submits; authenticates successfully via 
   await expect(page).toHaveURL(/\/dashboard/);
 
   // Take a screenshot of the active feature
-  await page.screenshot({ path: 'evidence.png' });
+  await page.screenshot({ path: 'evidence_old.png' });
 });
 
 test('Dashboard uses data-driven layout and component abstraction', async ({ page }) => {
@@ -127,7 +127,7 @@ test('Dashboard uses data-driven layout and component abstraction', async ({ pag
   await expect(page.locator('text=STABLE')).toBeVisible(); // Data injected in DataView StatCards
 
   // Take a screenshot of the active feature
-  await page.screenshot({ path: 'evidence.png' });
+  await page.screenshot({ path: 'evidence_old.png' });
 });
 
 test('Implement the foundational application shell and Navigation/Sidebar.', async ({ page }) => {
@@ -167,7 +167,7 @@ test('Implement the foundational application shell and Navigation/Sidebar.', asy
   await expect(page).toHaveURL(/tab=map/);
   
   // Take a screenshot of the active feature
-  await page.screenshot({ path: 'evidence.png' });
+  await page.screenshot({ path: 'evidence_old.png' });
 });
 
 test('Implement a protected route wrapper component.', async ({ page }) => {
@@ -193,5 +193,5 @@ test('Implement a protected route wrapper component.', async ({ page }) => {
   await expect(page).toHaveURL(/\/dashboard/);
 
   // Take a screenshot of the active feature
-  await page.screenshot({ path: 'evidence.png' });
+  await page.screenshot({ path: 'evidence_old.png' });
 });
