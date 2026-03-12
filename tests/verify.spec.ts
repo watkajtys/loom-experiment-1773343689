@@ -96,7 +96,7 @@ test('User fills out email/password and submits; authenticates successfully via 
   await expect(page).toHaveURL(/\/dashboard/);
 
   // Take a screenshot of the active feature
-  await page.screenshot({ path: 'evidence.png' });
+  await page.screenshot({ path: 'evidence_old.png' });
 });
 
 test('Dashboard uses data-driven layout and component abstraction', async ({ page }) => {
