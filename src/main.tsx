@@ -5,9 +5,12 @@ import './index.css'
 
 // Initialize pocketbase client globally
 import './lib/pocketbase.ts'
+import { AuthProvider } from './lib/AuthContext.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <App />
+    <AuthProvider>
+      <App />
+    </AuthProvider>
   </React.StrictMode>,
 )
