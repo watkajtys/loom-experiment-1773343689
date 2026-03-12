@@ -11,13 +11,13 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isValid, setIsValid] = useState<boolean>(pb.authStore.isValid);
-  const [user, setUser] = useState<RecordModel | null>(pb.authStore.model);
+  const [user, setUser] = useState<RecordModel | null>(pb.authStore.model as RecordModel | null);
 
   useEffect(() => {
     // Listen to changes in the PocketBase auth store
     const unsubscribe = pb.authStore.onChange((token, model) => {
       setIsValid(!!token);
-      setUser(model);
+      setUser(model as RecordModel | null);
     }, true); // Call immediately to sync any existing state
 
     // Cleanup subscription on unmount

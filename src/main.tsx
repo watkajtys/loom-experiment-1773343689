@@ -1,11 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
+import App from './App'
 import './index.css'
 
 // Initialize pocketbase client globally
-import './lib/pocketbase.ts'
-import { AuthProvider } from './lib/AuthContext.tsx'
+import './lib/pocketbase'
+import { AuthProvider } from './lib/AuthContext'
 import { BrowserRouter } from 'react-router-dom'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
