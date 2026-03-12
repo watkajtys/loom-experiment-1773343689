@@ -2,7 +2,7 @@
 <html class="dark" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Industrial Brutalist Control Shell</title>
+<title>Industrial Brutalist Control Shell - Step-Based Provisioning</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -15,9 +15,9 @@
                         "primary": "#00f3ff",
                         "amber-brutal": "#ffb800",
                         "red-brutal": "#ff003c",
-                        "background-stark": "#050505",
-                        "panel-industrial": "#0f0f0f",
-                        "border-heavy": "#222222"
+                        "background-stark": "#020202",
+                        "panel-industrial": "#0a0a0a",
+                        "border-heavy": "#2a2a2a"
                     },
                     fontFamily: {
                         "mono": ["Space Mono", "monospace"]
@@ -33,267 +33,236 @@
                 background-image: 
                     linear-gradient(to right, #111 1px, transparent 1px),
                     linear-gradient(to bottom, #111 1px, transparent 1px);
-                background-size: 20px 20px;
+                background-size: 15px 15px;
             }
-            .tactile-switch {
+            .tactile-switch-locked {
                 box-shadow: 
                     -2px -2px 0px #000,
-                    2px 2px 0px #333,
-                    inset 1px 1px 2px rgba(0,0,0,0.8);
+                    1px 1px 0px #222;
+                filter: grayscale(0.8) brightness(0.4);
+                cursor: not-allowed !important;
             }
-            .neon-cyan-glow {
-                box-shadow: 0 0 8px #00f3ff, 0 0 2px #00f3ff;
-            }
-            .neon-red-glow {
-                box-shadow: 0 0 8px #ff003c, 0 0 2px #ff003c;
-            }
-            .neon-amber-glow {
-                box-shadow: 0 0 8px #ffb800, 0 0 2px #ffb800;
-            }
-            .corner-accent {
-                position: relative;
-            }
+            .neon-cyan-glow { box-shadow: 0 0 10px #00f3ff; }
+            .neon-red-glow { box-shadow: 0 0 10px #ff003c; }
+            .neon-amber-glow { box-shadow: 0 0 10px #ffb800; }
+            .corner-accent { position: relative; }
             .corner-accent::before, .corner-accent::after {
                 content: '';
                 position: absolute;
-                width: 10px;
-                height: 10px;
-                border: 2px solid #00f3ff;
+                width: 14px;
+                height: 14px;
+                border: 3px solid #00f3ff;
             }
-            .corner-top-left::before { top: -2px; left: -2px; border-right: 0; border-bottom: 0; }
-            .corner-top-right::after { top: -2px; right: -2px; border-left: 0; border-bottom: 0; }
-            .corner-bottom-left::before { bottom: -2px; left: -2px; border-right: 0; border-top: 0; }
-            .corner-bottom-right::after { bottom: -2px; right: -2px; border-left: 0; border-top: 0; }
-            .terminal-scroll::-webkit-scrollbar { width: 4px; }
+            .corner-top-left::before { top: -3px; left: -3px; border-right: 0; border-bottom: 0; }
+            .corner-top-right::after { top: -3px; right: -3px; border-left: 0; border-bottom: 0; }
+            .corner-bottom-left::before { bottom: -3px; left: -3px; border-right: 0; border-top: 0; }
+            .corner-bottom-right::after { bottom: -3px; right: -3px; border-left: 0; border-top: 0; }
+            .terminal-scroll::-webkit-scrollbar { width: 6px; }
             .terminal-scroll::-webkit-scrollbar-track { background: #050505; }
-            .terminal-scroll::-webkit-scrollbar-thumb { background: #222; border-radius: 0; }
+            .terminal-scroll::-webkit-scrollbar-thumb { background: #333; }
+            .input-industrial {
+                @apply bg-black border-2 border-border-heavy text-primary p-2 text-xs font-bold focus:border-primary outline-none focus:ring-1 focus:ring-primary placeholder:text-zinc-700;
+            }
         }
         * { cursor: crosshair !important; }
         body { text-transform: uppercase; }
     </style>
 </head>
 <body class="bg-background-stark font-mono text-white antialiased overflow-hidden grid-paper">
-<div class="flex flex-col h-screen w-full border-4 border-border-heavy">
-<header class="h-12 bg-panel-industrial border-b-4 border-border-heavy flex items-center justify-between px-4 z-40 shrink-0">
+<div class="flex flex-col h-screen w-full border-[6px] border-border-heavy">
+<header class="h-14 bg-panel-industrial border-b-[6px] border-border-heavy flex items-center justify-between px-4 z-40 shrink-0">
 <div class="flex items-center gap-6">
-<div class="flex items-center gap-3 bg-primary px-4 py-1.5 border-r-4 border-b-4 border-black">
-<span class="material-symbols-outlined text-black scale-110 font-bold">terminal</span>
-<span class="text-black font-bold text-xs tracking-widest">CONSOLE_V4.0_SHELL</span>
+<div class="flex items-center gap-3 bg-primary px-5 py-2 border-r-4 border-b-4 border-black">
+<span class="material-symbols-outlined text-black scale-110 font-bold">security</span>
+<span class="text-black font-bold text-sm tracking-[0.2em]">AUTH_PROVISIONING_MOD_3</span>
 </div>
-<div class="flex gap-6 border-l-2 border-border-heavy pl-6">
+<div class="flex gap-8 border-l-2 border-border-heavy pl-8">
 <div class="flex flex-col">
-<span class="text-[8px] text-gray-500 font-bold">SIGNAL_DB</span>
+<span class="text-[9px] text-zinc-500 font-bold">KERNEL_STATUS</span>
 <div class="flex gap-1 mt-1">
-<div class="w-2 h-2 bg-primary neon-cyan-glow"></div>
-<div class="w-2 h-2 bg-primary neon-cyan-glow"></div>
-<div class="w-2 h-2 bg-primary neon-cyan-glow"></div>
-<div class="w-2 h-2 bg-zinc-800"></div>
+<div class="w-3 h-3 bg-primary neon-cyan-glow"></div>
+<div class="w-3 h-3 bg-zinc-800"></div>
+<div class="w-3 h-3 bg-zinc-800"></div>
 </div>
 </div>
 <div class="flex flex-col">
-<span class="text-[8px] text-gray-500 font-bold">ENCRYPTION</span>
-<span class="text-[10px] text-primary font-bold">AES_512_SECURE</span>
+<span class="text-[9px] text-zinc-500 font-bold">ENCRYPTION_LAYER</span>
+<span class="text-[11px] text-amber-brutal font-bold">RSA_4096_PENDING</span>
 </div>
 </div>
 </div>
-<div class="flex items-center gap-4">
-<div class="flex bg-black border-2 border-border-heavy p-0.5">
-<button class="px-4 py-1 text-[10px] font-bold border border-transparent text-gray-500 hover:text-primary">MAP</button>
-<button class="px-4 py-1 bg-zinc-800 text-primary text-[10px] font-bold border border-border-heavy">DATA</button>
-<button class="px-4 py-1 text-[10px] font-bold border border-transparent text-gray-500 hover:text-primary">COMMS</button>
+<div class="flex items-center gap-6">
+<div class="flex bg-black border-2 border-border-heavy p-1">
+<button class="px-6 py-1 text-[11px] font-bold border border-transparent text-zinc-500 hover:text-primary">HELP</button>
+<button class="px-6 py-1 bg-zinc-800 text-primary text-[11px] font-bold border border-border-heavy">PROVISION</button>
 </div>
-<div class="flex items-center gap-3 bg-red-brutal/10 border-2 border-red-brutal px-3 py-1">
-<span class="w-2 h-2 bg-red-brutal neon-red-glow"></span>
-<span class="text-[10px] text-red-brutal font-bold">ALARM_ACTIVE</span>
+<div class="flex items-center gap-3 bg-red-brutal/20 border-2 border-red-brutal px-4 py-1.5">
+<span class="w-2.5 h-2.5 bg-red-brutal neon-red-glow"></span>
+<span class="text-[11px] text-red-brutal font-bold">HARDWARE_LOCKED</span>
 </div>
 </div>
 </header>
 <div class="flex flex-1 overflow-hidden">
-<aside class="w-72 bg-panel-industrial border-r-4 border-border-heavy flex flex-col shrink-0 z-30">
-<div class="p-4 flex-1 flex flex-col gap-8 overflow-y-auto terminal-scroll">
+<aside class="w-80 bg-panel-industrial border-r-[6px] border-border-heavy flex flex-col shrink-0 z-30">
+<div class="p-5 flex-1 flex flex-col gap-10 overflow-y-auto terminal-scroll">
 <section>
-<h4 class="text-[10px] font-bold text-primary mb-6 border-b-2 border-primary/20 pb-1">HARDWARE_TOGGLES</h4>
-<div class="grid grid-cols-1 gap-4">
-<div class="bg-black border-2 border-border-heavy p-4 tactile-switch">
+<div class="flex justify-between items-center mb-6 border-b-2 border-red-brutal/40 pb-2">
+<h4 class="text-[11px] font-bold text-red-brutal">HARDWARE_SUBSYSTEMS</h4>
+<span class="text-[9px] text-red-brutal font-bold">[LOCKED]</span>
+</div>
+<div class="grid grid-cols-1 gap-5">
+<div class="bg-black/50 border-2 border-zinc-900 p-4 tactile-switch-locked">
 <div class="flex justify-between items-center mb-4">
-<span class="text-[10px] font-bold text-gray-300">CORE_TURBINE_A</span>
-<div class="w-12 h-6 bg-zinc-900 border-2 border-black relative cursor-pointer shadow-[inset_0px_2px_4px_black]">
-<div class="absolute top-0 left-0 w-6 h-full bg-zinc-700 border-r-2 border-black flex items-center justify-center">
-<div class="w-1 h-3 bg-zinc-800"></div>
+<span class="text-[11px] font-bold text-zinc-600">PRIMARY_CORE_A</span>
+<div class="w-12 h-6 bg-zinc-950 border-2 border-zinc-900 relative">
+<div class="absolute top-0 right-0 w-6 h-full bg-zinc-800 flex items-center justify-center">
+<div class="w-1.5 h-3 bg-zinc-900"></div>
 </div>
 </div>
 </div>
 <div class="flex items-center gap-2">
-<span class="w-2 h-2 bg-primary neon-cyan-glow"></span>
-<span class="text-[9px] text-primary font-bold">STATUS_ACTIVE</span>
+<span class="w-2.5 h-2.5 bg-red-brutal/30"></span>
+<span class="text-[10px] text-zinc-600 font-bold">SIG_OFFLINE</span>
 </div>
 </div>
-<div class="bg-black border-2 border-border-heavy p-4 tactile-switch">
+<div class="bg-black/50 border-2 border-zinc-900 p-4 tactile-switch-locked">
 <div class="flex justify-between items-center mb-4">
-<span class="text-[10px] font-bold text-gray-300">VALVE_SYSTEM_B</span>
-<div class="w-12 h-6 bg-zinc-900 border-2 border-black relative cursor-pointer shadow-[inset_0px_2px_4px_black]">
-<div class="absolute top-0 right-0 w-6 h-full bg-zinc-700 border-l-2 border-black flex items-center justify-center">
-<div class="w-1 h-3 bg-zinc-800"></div>
+<span class="text-[11px] font-bold text-zinc-600">VALVE_ARRAY_04</span>
+<div class="w-12 h-6 bg-zinc-950 border-2 border-zinc-900 relative">
+<div class="absolute top-0 right-0 w-6 h-full bg-zinc-800 flex items-center justify-center">
+<div class="w-1.5 h-3 bg-zinc-900"></div>
 </div>
 </div>
 </div>
 <div class="flex items-center gap-2">
-<span class="w-2 h-2 bg-zinc-800"></span>
-<span class="text-[9px] text-gray-600 font-bold">MANUAL_BYPASS</span>
+<span class="w-2.5 h-2.5 bg-red-brutal/30"></span>
+<span class="text-[10px] text-zinc-600 font-bold">SIG_OFFLINE</span>
 </div>
 </div>
-<div class="bg-black border-2 border-border-heavy p-4 tactile-switch">
+<div class="bg-black/50 border-2 border-zinc-900 p-4 tactile-switch-locked">
 <div class="flex justify-between items-center mb-4">
-<span class="text-[10px] font-bold text-gray-300">THERMAL_REG</span>
-<div class="w-12 h-6 bg-zinc-900 border-2 border-black relative cursor-pointer shadow-[inset_0px_2px_4px_black]">
-<div class="absolute top-0 left-0 w-6 h-full bg-zinc-700 border-r-2 border-black flex items-center justify-center">
-<div class="w-1 h-3 bg-zinc-800"></div>
+<span class="text-[11px] font-bold text-zinc-600">HEAT_EXCHANGER</span>
+<div class="w-12 h-6 bg-zinc-950 border-2 border-zinc-900 relative">
+<div class="absolute top-0 right-0 w-6 h-full bg-zinc-800 flex items-center justify-center">
+<div class="w-1.5 h-3 bg-zinc-900"></div>
 </div>
 </div>
 </div>
 <div class="flex items-center gap-2">
-<span class="w-2 h-2 bg-amber-brutal neon-amber-glow"></span>
-<span class="text-[9px] text-amber-brutal font-bold">WARNING_LVL_2</span>
+<span class="w-2.5 h-2.5 bg-red-brutal/30"></span>
+<span class="text-[10px] text-zinc-600 font-bold">SIG_OFFLINE</span>
 </div>
 </div>
 </div>
 </section>
 <section>
-<h4 class="text-[10px] font-bold text-gray-500 mb-4 border-b-2 border-border-heavy pb-1">SUB_PROCESSES</h4>
-<div class="flex flex-col gap-1">
-<button class="w-full text-left p-3 border-2 border-border-heavy bg-black hover:bg-primary hover:text-black transition-none font-bold text-xs flex items-center gap-3">
-<span class="material-symbols-outlined text-sm">storage</span> MEMORY_CELLS
+<h4 class="text-[11px] font-bold text-zinc-500 mb-4 border-b-2 border-border-heavy pb-1">RECOVERY_TOOLS</h4>
+<div class="flex flex-col gap-2">
+<button class="w-full text-left p-4 border-2 border-border-heavy bg-black/40 text-zinc-600 font-bold text-xs flex items-center gap-4 cursor-not-allowed">
+<span class="material-symbols-outlined text-sm">key_visualizer</span> KEY_BYPASS
                         </button>
-<button class="w-full text-left p-3 border-2 border-border-heavy bg-black hover:bg-primary hover:text-black transition-none font-bold text-xs flex items-center gap-3">
-<span class="material-symbols-outlined text-sm">security</span> FIREWALL_ROOT
-                        </button>
-<button class="w-full text-left p-3 border-2 border-border-heavy bg-black hover:bg-primary hover:text-black transition-none font-bold text-xs flex items-center gap-3">
-<span class="material-symbols-outlined text-sm">hub</span> NETWORK_MAP
+<button class="w-full text-left p-4 border-2 border-border-heavy bg-black/40 text-zinc-600 font-bold text-xs flex items-center gap-4 cursor-not-allowed">
+<span class="material-symbols-outlined text-sm">terminal</span> ROOT_CONSOLE
                         </button>
 </div>
 </section>
 </div>
-<div class="p-4 border-t-4 border-border-heavy bg-black">
+<div class="p-6 border-t-4 border-border-heavy bg-black">
 <div class="flex justify-between items-center mb-4">
-<span class="text-[8px] text-gray-500 font-bold">UPTIME_CLOCK</span>
-<span class="text-[10px] font-bold text-primary tabular-nums tracking-widest">1,042:12:04</span>
+<span class="text-[9px] text-zinc-500 font-bold">BOOT_TIME</span>
+<span class="text-[11px] font-bold text-zinc-400 tabular-nums">00:00:42:19</span>
 </div>
-<button class="w-full py-3 bg-red-brutal text-black border-4 border-black font-bold text-xs active:translate-y-1 shadow-[4px_4px_0px_#000]">
-                    EMERGENCY_SCRAM
-                </button>
+<div class="w-full py-4 bg-zinc-900 text-zinc-600 border-4 border-zinc-800 font-bold text-xs text-center">
+                    SYSTEM_LOCKED
+                </div>
 </div>
 </aside>
-<main class="flex-1 overflow-y-auto p-10 relative">
-<div class="max-w-7xl mx-auto space-y-10 relative">
-<div class="flex flex-col md:flex-row md:items-end justify-between border-l-8 border-primary pl-8 py-4 bg-black/40 corner-accent corner-top-right">
-<div>
-<h1 class="text-6xl font-bold tracking-tighter leading-none text-white">SECTOR_MATRIX</h1>
-<p class="text-primary text-xs mt-4 font-bold tracking-[0.2em]">ID: DX-200 // AUTH: OMEGA_01 // LVL: SUB_4</p>
+<main class="flex-1 overflow-y-auto p-12 relative bg-black/20">
+<div class="max-w-6xl mx-auto space-y-12 relative">
+<div class="bg-black border-[4px] border-primary p-8 corner-accent corner-top-left corner-top-right shadow-[10px_10px_0px_#003438]">
+<div class="flex flex-col md:flex-row gap-12">
+<div class="md:w-1/3">
+<h2 class="text-3xl font-bold tracking-tighter text-primary border-b-4 border-primary mb-4 pb-2">SYS_ACCESS</h2>
+<p class="text-[10px] text-primary/70 font-bold leading-relaxed">PROVIDE OPERATOR CREDENTIALS TO INITIALIZE HARDWARE INTERFACE. IF NEW UNIT: PROCEED TO GRID_ENROLLMENT BELOW.</p>
 </div>
-<div class="mt-8 md:mt-0 flex gap-4">
-<button class="px-6 py-3 bg-black border-4 border-border-heavy text-[10px] font-bold hover:border-primary">GENERATE_REP</button>
-<button class="px-6 py-3 bg-primary text-black font-bold text-[10px] border-4 border-black shadow-[4px_4px_0px_#222]">OVERRIDE_LOCK</button>
+<div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="text-[10px] font-bold text-primary">OPERATOR_ID</label>
+<input class="input-industrial w-full" placeholder="ID_STATION_XXXX" type="text"/>
 </div>
+<div class="space-y-2">
+<label class="text-[10px] font-bold text-primary">ACCESS_KEY</label>
+<input class="input-industrial w-full" placeholder="********" type="password"/>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-<div class="bg-black border-4 border-border-heavy p-6 corner-accent corner-bottom-left">
-<div class="flex justify-between items-start mb-6">
-<span class="text-[10px] font-bold text-gray-500">PWR_DRAW</span>
-<span class="text-primary text-[10px] font-bold neon-cyan-glow bg-primary/10 px-2">STABLE</span>
-</div>
-<div class="text-5xl font-bold text-primary mb-4 tracking-tighter">824.5 <span class="text-lg">KW</span></div>
-<div class="h-2 w-full bg-zinc-900 border border-border-heavy">
-<div class="h-full bg-primary" style="width: 72%;"></div>
-</div>
-</div>
-<div class="bg-black border-4 border-border-heavy p-6">
-<div class="flex justify-between items-start mb-6">
-<span class="text-[10px] font-bold text-gray-500">THERM_LD</span>
-<span class="text-amber-brutal text-[10px] font-bold neon-amber-glow bg-amber-brutal/10 px-2">RISING</span>
-</div>
-<div class="text-5xl font-bold text-amber-brutal mb-4 tracking-tighter">48.2 <span class="text-lg">Â°C</span></div>
-<div class="h-2 w-full bg-zinc-900 border border-border-heavy">
-<div class="h-full bg-amber-brutal" style="width: 48%;"></div>
-</div>
-</div>
-<div class="bg-black border-4 border-border-heavy p-6">
-<div class="flex justify-between items-start mb-6">
-<span class="text-[10px] font-bold text-gray-500">CACHE_UT</span>
-<span class="text-primary text-[10px] font-bold neon-cyan-glow bg-primary/10 px-2">PEAK</span>
-</div>
-<div class="text-5xl font-bold text-white mb-4 tracking-tighter">92.1 <span class="text-lg">%</span></div>
-<div class="h-2 w-full bg-zinc-900 border border-border-heavy">
-<div class="h-full bg-primary" style="width: 92%;"></div>
-</div>
-</div>
-<div class="bg-black border-4 border-border-heavy p-6 corner-accent corner-bottom-right">
-<div class="flex justify-between items-start mb-6">
-<span class="text-[10px] font-bold text-gray-500">NET_LAT</span>
-<span class="text-primary text-[10px] font-bold neon-cyan-glow bg-primary/10 px-2">NOMINAL</span>
-</div>
-<div class="text-5xl font-bold text-white mb-4 tracking-tighter">0.08 <span class="text-lg">MS</span></div>
-<div class="h-2 w-full bg-zinc-900 border border-border-heavy">
-<div class="h-full bg-primary" style="width: 15%;"></div>
+<div class="md:col-span-2 flex justify-end">
+<button class="px-10 py-3 bg-primary text-black font-bold text-sm border-4 border-black hover:bg-white transition-colors shadow-[4px_4px_0px_#00f3ff55]">INIT_HANDSHAKE</button>
 </div>
 </div>
 </div>
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-<div class="lg:col-span-8 bg-black border-4 border-border-heavy corner-accent corner-top-left">
-<div class="p-4 border-b-4 border-border-heavy flex justify-between items-center bg-zinc-900">
-<h3 class="text-[10px] font-bold tracking-widest flex items-center gap-3 text-primary">
-<span class="w-3 h-3 bg-primary neon-cyan-glow"></span> TELEMETRY_STREAM_7
-                            </h3>
-<div class="flex gap-6 text-[10px] text-gray-500 font-bold">
-<span>FREQ: 144.2 MHZ</span>
-<span>AMP: 4.2 V</span>
 </div>
-</div>
-<div class="p-8 h-[320px] flex items-end gap-2 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]">
-<div class="flex-1 bg-primary/30 border-t-4 border-primary h-[40%]"></div>
-<div class="flex-1 bg-primary/30 border-t-4 border-primary h-[60%]"></div>
-<div class="flex-1 bg-primary/30 border-t-4 border-primary h-[55%]"></div>
-<div class="flex-1 bg-primary/30 border-t-4 border-primary h-[85%]"></div>
-<div class="flex-1 bg-primary/30 border-t-4 border-primary h-[70%]"></div>
-<div class="flex-1 bg-primary/30 border-t-4 border-primary h-[30%]"></div>
-<div class="flex-1 bg-primary/30 border-t-4 border-primary h-[45%]"></div>
-<div class="flex-1 bg-primary/30 border-t-4 border-primary h-[95%]"></div>
-<div class="flex-1 bg-primary/30 border-t-4 border-primary h-[65%]"></div>
-<div class="flex-1 bg-primary/30 border-t-4 border-primary h-[50%]"></div>
-<div class="flex-1 bg-primary/30 border-t-4 border-primary h-[40%]"></div>
-<div class="flex-1 bg-primary/30 border-t-4 border-primary h-[75%]"></div>
-</div>
-</div>
-<div class="lg:col-span-4 bg-black border-4 border-border-heavy flex flex-col corner-accent corner-top-right">
-<div class="p-4 border-b-4 border-border-heavy bg-zinc-900">
-<h3 class="text-[10px] font-bold tracking-widest text-primary">ACTIVE_OPERATORS</h3>
-</div>
-<div class="flex-1 p-6 space-y-6 overflow-y-auto terminal-scroll">
-<div class="flex items-center gap-4 border-b border-border-heavy pb-4">
-<div class="w-10 h-10 bg-zinc-800 border-2 border-primary flex items-center justify-center">
-<span class="material-symbols-outlined text-primary">person</span>
-</div>
-<div>
-<div class="text-[11px] font-bold text-white">ADMIN_KLYNE</div>
-<div class="text-[9px] text-primary font-bold">SUPERVISOR_MODE</div>
-</div>
-</div>
-<div class="flex items-center gap-4 border-b border-border-heavy pb-4">
-<div class="w-10 h-10 bg-zinc-800 border-2 border-border-heavy flex items-center justify-center">
-<span class="material-symbols-outlined text-gray-500">person</span>
-</div>
-<div>
-<div class="text-[11px] font-bold text-white">TECH_DRAKE</div>
-<div class="text-[9px] text-gray-500 font-bold">STATION_04_LOC</div>
-</div>
-</div>
+<div class="bg-black border-[4px] border-border-heavy p-8 corner-accent corner-bottom-left corner-bottom-right">
+<div class="flex justify-between items-center mb-10 border-b-4 border-border-heavy pb-4">
 <div class="flex items-center gap-4">
-<div class="w-10 h-10 bg-zinc-800 border-2 border-amber-brutal flex items-center justify-center">
-<span class="material-symbols-outlined text-amber-brutal">engineering</span>
+<span class="text-xs bg-amber-brutal text-black font-bold px-3 py-1">TASK_REQ</span>
+<h2 class="text-2xl font-bold tracking-[0.1em]">GRID_ENROLLMENT_V3.2</h2>
 </div>
-<div>
-<div class="text-[11px] font-bold text-white">ENG_VANCE</div>
-<div class="text-[9px] text-amber-brutal font-bold">MAINT_REQUIRED</div>
+<div class="flex gap-2">
+<div class="w-8 h-2 bg-amber-brutal"></div>
+<div class="w-8 h-2 bg-zinc-800"></div>
+<div class="w-8 h-2 bg-zinc-800"></div>
+<div class="w-8 h-2 bg-zinc-800"></div>
 </div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="space-y-6 border-r-2 border-border-heavy pr-8">
+<div class="flex items-center gap-3">
+<span class="text-2xl font-bold text-amber-brutal">01</span>
+<span class="text-xs font-bold text-zinc-500">ID_VALIDATION</span>
+</div>
+<div class="space-y-4">
+<input class="input-industrial w-full border-zinc-800" placeholder="FULL_NAME" type="text"/>
+<input class="input-industrial w-full border-zinc-800" placeholder="SECTOR_ASSIGNMENT" type="text"/>
+<div class="p-4 border-2 border-dashed border-zinc-800 bg-zinc-900/30 text-center">
+<span class="material-symbols-outlined text-zinc-600 mb-2">fingerprint</span>
+<p class="text-[9px] text-zinc-600 font-bold">SCAN_BIOMETRIC_DATA</p>
+</div>
+</div>
+</div>
+<div class="space-y-6 border-r-2 border-border-heavy pr-8">
+<div class="flex items-center gap-3">
+<span class="text-2xl font-bold text-amber-brutal">02</span>
+<span class="text-xs font-bold text-zinc-500">AUTH_LEVEL_SET</span>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<button class="p-3 border-2 border-zinc-800 text-[10px] font-bold text-zinc-500 hover:border-amber-brutal hover:text-amber-brutal">LVL_01</button>
+<button class="p-3 border-2 border-zinc-800 text-[10px] font-bold text-zinc-500 hover:border-amber-brutal hover:text-amber-brutal">LVL_02</button>
+<button class="p-3 border-2 border-zinc-800 text-[10px] font-bold text-zinc-500 hover:border-amber-brutal hover:text-amber-brutal">LVL_03</button>
+<button class="p-3 border-2 border-zinc-800 text-[10px] font-bold text-zinc-500 hover:border-amber-brutal hover:text-amber-brutal">LVL_OMEGA</button>
+</div>
+<div class="flex items-start gap-3 bg-amber-brutal/5 p-4 border border-amber-brutal/20">
+<span class="material-symbols-outlined text-amber-brutal text-sm">warning</span>
+<p class="text-[9px] text-amber-brutal font-bold">OMEGA_LEVEL REQUIRES PHYSICAL KEY_CARD INSERTION.</p>
+</div>
+</div>
+<div class="space-y-6">
+<div class="flex items-center gap-3">
+<span class="text-2xl font-bold text-amber-brutal">03</span>
+<span class="text-xs font-bold text-zinc-500">PROVISION_INIT</span>
+</div>
+<div class="space-y-4">
+<div class="flex flex-col gap-2">
+<div class="flex justify-between text-[10px] font-bold">
+<span class="text-zinc-500">COMPILING_PROFILES...</span>
+<span class="text-amber-brutal">0%</span>
+</div>
+<div class="h-4 bg-zinc-900 border-2 border-zinc-800 p-0.5">
+<div class="h-full bg-zinc-700 w-0"></div>
+</div>
+</div>
+<button class="w-full py-6 bg-zinc-900 border-4 border-zinc-800 text-zinc-700 font-bold text-sm tracking-widest cursor-not-allowed">
+                                    EXECUTE_PROVISIONING
+                                </button>
+<p class="text-[8px] text-zinc-600 font-bold text-center">SYSTEM_STANDBY: COMPLETE PREVIOUS STEPS TO UNLOCK FINAL EXECUTION</p>
 </div>
 </div>
 </div>
@@ -301,72 +270,72 @@
 </div>
 </main>
 </div>
-<footer class="h-32 bg-panel-industrial border-t-4 border-border-heavy grid grid-cols-12 z-40 shrink-0 overflow-hidden">
-<div class="col-span-3 border-r-4 border-border-heavy p-4 flex flex-col justify-center bg-black">
-<div class="flex items-center gap-3 mb-3">
-<span class="material-symbols-outlined text-primary text-sm">vpn_key</span>
-<span class="text-[10px] font-bold tracking-[0.2em] text-gray-400">ENCRYPTION_LINK</span>
+<footer class="h-36 bg-panel-industrial border-t-[6px] border-border-heavy grid grid-cols-12 z-40 shrink-0">
+<div class="col-span-3 border-r-4 border-border-heavy p-5 flex flex-col justify-center bg-black">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-amber-brutal text-sm">hub</span>
+<span class="text-[11px] font-bold tracking-[0.2em] text-zinc-500">NETWORK_GATE</span>
 </div>
-<div class="flex flex-col gap-2">
-<div class="flex justify-between items-center text-[9px] font-bold">
-<span class="text-gray-500">AES-XTS-512</span>
-<span class="text-primary neon-cyan-glow">ACTIVE</span>
+<div class="flex flex-col gap-3">
+<div class="flex justify-between items-center text-[10px] font-bold">
+<span class="text-zinc-500">LINK_VERIFICATION</span>
+<span class="text-red-brutal">WAITING...</span>
 </div>
-<div class="h-1.5 w-full bg-zinc-900">
-<div class="h-full bg-primary" style="width: 100%;"></div>
-</div>
-</div>
-</div>
-<div class="col-span-6 border-r-4 border-border-heavy bg-black p-4 font-mono text-[10px] overflow-hidden flex flex-col">
-<div class="flex justify-between items-center mb-2 text-primary font-bold border-b border-primary/20 pb-1">
-<span class="tracking-widest">TACTICAL_LOG_FEED</span>
-<span class="opacity-50">SESSION_IDX_8812</span>
-</div>
-<div class="flex-1 overflow-y-auto pr-4 space-y-1 terminal-scroll">
-<div class="flex gap-4 border-l-2 border-zinc-800 pl-2">
-<span class="text-gray-600 font-bold">[14:34:01]</span>
-<span class="text-primary font-bold">SYS_INFO</span>
-<span class="text-gray-300">HANDSHAKE_ESTABLISHED_DELTA_NODE</span>
-</div>
-<div class="flex gap-4 border-l-2 border-primary pl-2">
-<span class="text-gray-600 font-bold">[14:34:22]</span>
-<span class="text-primary font-bold">AUTH_REQ</span>
-<span class="text-gray-300">IDENTITY_VERIFIED_BIOMETRIC_RELAY_SUCCESS</span>
-</div>
-<div class="flex gap-4 border-l-2 border-red-brutal pl-2 bg-red-brutal/5">
-<span class="text-gray-600 font-bold">[14:35:05]</span>
-<span class="text-red-brutal font-bold">WARN_PKT</span>
-<span class="text-red-brutal">PACKET_LOSS_DETECTED_LINE_7G_CRITICAL</span>
-</div>
-<div class="flex gap-4 border-l-2 border-zinc-800 pl-2">
-<span class="text-gray-600 font-bold">[14:35:12]</span>
-<span class="text-primary font-bold">NET_REOUTE</span>
-<span class="text-gray-300">DIVERSION_THRU_SUB_SILO_01_COMPLETE</span>
-</div>
-<div class="flex gap-4 border-l-2 border-amber-brutal pl-2 bg-amber-brutal/5">
-<span class="text-gray-600 font-bold">[14:36:00]</span>
-<span class="text-amber-brutal font-bold">THRM_ALRT</span>
-<span class="text-amber-brutal">THERMAL_THRESHOLD_APPROACHING_LIMITS</span>
+<div class="h-2 w-full bg-zinc-900">
+<div class="h-full bg-red-brutal/30" style="width: 25%;"></div>
 </div>
 </div>
 </div>
-<div class="col-span-3 p-4 flex flex-col justify-center bg-black">
-<div class="flex items-center justify-between mb-3 border-b border-border-heavy pb-1">
-<span class="text-[9px] font-bold text-gray-500">DIAGNOSTIC_MTX</span>
-<span class="text-[9px] font-bold text-primary tabular-nums tracking-widest">34.05 / 118.24</span>
+<div class="col-span-6 border-r-4 border-border-heavy bg-black p-5 font-mono text-[10px] overflow-hidden flex flex-col">
+<div class="flex justify-between items-center mb-3 text-primary font-bold border-b border-primary/30 pb-1">
+<span class="tracking-[0.3em]">AUTH_TACTICAL_LOG_STREAM</span>
+<span class="text-zinc-500">NODE_001_BOOT</span>
 </div>
-<div class="grid grid-cols-3 gap-2">
-<div class="bg-zinc-900 border-2 border-border-heavy p-2 flex flex-col items-center">
-<span class="text-[8px] text-gray-600 font-bold">CPU</span>
-<span class="text-xs font-bold text-primary">0.02%</span>
+<div class="flex-1 overflow-y-auto pr-4 space-y-1.5 terminal-scroll">
+<div class="flex gap-4 border-l-2 border-zinc-800 pl-3">
+<span class="text-zinc-600 font-bold">[00:00:01]</span>
+<span class="text-zinc-400 font-bold">KERN</span>
+<span class="text-zinc-500">KERNEL_BOOT_SEQUENCE_INITIALIZED</span>
 </div>
-<div class="bg-zinc-900 border-2 border-border-heavy p-2 flex flex-col items-center">
-<span class="text-[8px] text-gray-600 font-bold">NET</span>
-<span class="text-xs font-bold text-primary">1.2GB/S</span>
+<div class="flex gap-4 border-l-2 border-zinc-800 pl-3">
+<span class="text-zinc-600 font-bold">[00:00:05]</span>
+<span class="text-zinc-400 font-bold">MEM_</span>
+<span class="text-zinc-500">ALLOCATING_PAGES_78122_SUCCESS</span>
 </div>
-<div class="bg-zinc-900 border-2 border-border-heavy p-2 flex flex-col items-center">
-<span class="text-[8px] text-gray-600 font-bold">IO_B</span>
-<span class="text-xs font-bold text-amber-brutal neon-amber-glow">BUSY</span>
+<div class="flex gap-4 border-l-2 border-red-brutal pl-3 bg-red-brutal/10">
+<span class="text-red-brutal font-bold">[00:00:12]</span>
+<span class="text-red-brutal font-bold">LOCK</span>
+<span class="text-red-brutal">HARDWARE_SUBSYSTEMS_FROZEN_PENDING_AUTH</span>
+</div>
+<div class="flex gap-4 border-l-2 border-zinc-800 pl-3">
+<span class="text-zinc-600 font-bold">[00:00:30]</span>
+<span class="text-primary font-bold">SERV</span>
+<span class="text-zinc-500">PROVISIONING_PORT_8080_LISTENING</span>
+</div>
+<div class="flex gap-4 border-l-2 border-amber-brutal pl-3 bg-amber-brutal/5">
+<span class="text-zinc-600 font-bold">[00:00:42]</span>
+<span class="text-amber-brutal font-bold">WAIT</span>
+<span class="text-amber-brutal">AWAITING_GRID_ENROLLMENT_PACKETS...</span>
+</div>
+</div>
+</div>
+<div class="col-span-3 p-5 flex flex-col justify-center bg-black">
+<div class="flex items-center justify-between mb-4 border-b border-border-heavy pb-2">
+<span class="text-[10px] font-bold text-zinc-500">PROVISIONING_MTX</span>
+<span class="text-[10px] font-bold text-primary tabular-nums tracking-widest">0.00 / 100.00</span>
+</div>
+<div class="grid grid-cols-3 gap-3">
+<div class="bg-zinc-950 border-2 border-zinc-900 p-3 flex flex-col items-center">
+<span class="text-[9px] text-zinc-700 font-bold">DB_SYNC</span>
+<span class="text-[10px] font-bold text-zinc-800">0%</span>
+</div>
+<div class="bg-zinc-950 border-2 border-zinc-900 p-3 flex flex-col items-center">
+<span class="text-[9px] text-zinc-700 font-bold">NET_UP</span>
+<span class="text-[10px] font-bold text-zinc-800">0.0B</span>
+</div>
+<div class="bg-zinc-950 border-2 border-zinc-900 p-3 flex flex-col items-center">
+<span class="text-[9px] text-zinc-700 font-bold">IO_STAT</span>
+<span class="text-[10px] font-bold text-zinc-800">IDLE</span>
 </div>
 </div>
 </div>
