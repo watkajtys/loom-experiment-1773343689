@@ -59,7 +59,7 @@ test('User fills out email/password and submits; authenticates successfully via 
   await expect(page.getByText('SYS_ACCESS')).toBeVisible();
 
   // Take a screenshot of the active feature (Login UI) before submitting
-  await page.screenshot({ path: 'evidence.png' });
+  await page.screenshot({ path: 'evidence_old.png' });
 
   // Find inputs using the exact placeholders
   const operatorIdInput = page.getByPlaceholder('ID_STATION_XXXX');
