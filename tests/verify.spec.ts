@@ -50,5 +50,5 @@ test('PocketBase auth store changes automatically update the global user context
   await expect(page.locator('#auth-status')).toHaveText('Logged in as test@example.com');
 
   // Take a screenshot of the active feature
-  await page.screenshot({ path: 'evidence.png' });
+  await page.screenshot({ path: 'evidence_old.png' });
 });
