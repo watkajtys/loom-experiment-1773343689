@@ -1,3 +1,5 @@
+#!/bin/bash
+cat << 'INNER_EOF' > tests/verify.spec.ts
 import { test, expect } from '@playwright/test';
 
 test('App initializes correctly', async ({ page }) => {
@@ -195,3 +197,4 @@ test('Implement a protected route wrapper component.', async ({ page }) => {
   // Take a screenshot of the active feature
   await page.screenshot({ path: 'evidence.png' });
 });
+INNER_EOF

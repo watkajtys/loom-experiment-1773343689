@@ -4,8 +4,7 @@ import Dashboard from './Dashboard';
 import { Login } from './features/auth/Login';
 
 function Home() {
-  // For Phase 1, auto-redirect to dashboard to showcase the application shell
-  return <Navigate to="/dashboard" replace />;
+  return <Navigate to="/login" replace />;
 }
 
 export default function App() {
