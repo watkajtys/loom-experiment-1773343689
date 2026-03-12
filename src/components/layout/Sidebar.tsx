@@ -1,10 +1,12 @@
 import React from 'react';
 import { Button } from '../ui/Button';
 import { TactileSwitch } from '../ui/TactileSwitch';
-import { useDashboardData } from '../../hooks/useDashboardData';
+import { useHardwareToggles } from '../../hooks/useHardwareToggles';
+import { useSubProcesses } from '../../hooks/useSubProcesses';
 
 export function Sidebar() {
-    const { hardwareToggles, subProcesses } = useDashboardData();
+    const { items: hardwareToggles } = useHardwareToggles();
+    const { items: subProcesses } = useSubProcesses();
 
     return (
         <aside className="w-72 bg-panel-industrial border-r-4 border-border-heavy flex flex-col shrink-0 z-30">

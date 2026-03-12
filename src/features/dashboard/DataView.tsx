@@ -1,12 +1,16 @@
 import React from 'react';
 import { Button } from '../../components/ui/Button';
 import { StatCard } from '../../components/ui/StatCard';
-import { useDashboardData } from '../../hooks/useDashboardData';
+import { useStats } from '../../hooks/useStats';
+import { useOperators } from '../../hooks/useOperators';
+import { TelemetryChart } from './TelemetryChart';
+import { OperatorList } from './OperatorList';
 
 export function DataView() {
-    const { stats, operators, loading } = useDashboardData();
+    const { items: stats, loading: statsLoading } = useStats();
+    const { items: operators, loading: operatorsLoading } = useOperators();
 
-    if (loading) {
+    if (statsLoading || operatorsLoading) {
         return <div className="p-8 text-primary font-mono text-sm">LOADING_MODULES...</div>;
     }
 
@@ -45,60 +49,8 @@ export function DataView() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <div className="lg:col-span-8 bg-black border-4 border-border-heavy corner-accent corner-top-left">
-                    <div className="p-4 border-b-4 border-border-heavy flex justify-between items-center bg-zinc-900">
-                        <h3 className="text-[10px] font-bold tracking-widest flex items-center gap-3 text-primary">
-                            <span className="w-3 h-3 bg-primary neon-cyan-glow"></span> TELEMETRY_STREAM_7
-                        </h3>
-                        <div className="flex gap-6 text-[10px] text-gray-500 font-bold">
-                            <span>FREQ: 144.2 MHZ</span>
-                            <span>AMP: 4.2 V</span>
-                        </div>
-                    </div>
-                    <div className="p-8 h-[320px] flex items-end gap-2 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]">
-                        <div className="flex-1 bg-primary/30 border-t-4 border-primary h-[40%]"></div>
-                        <div className="flex-1 bg-primary/30 border-t-4 border-primary h-[60%]"></div>
-                        <div className="flex-1 bg-primary/30 border-t-4 border-primary h-[55%]"></div>
-                        <div className="flex-1 bg-primary/30 border-t-4 border-primary h-[85%]"></div>
-                        <div className="flex-1 bg-primary/30 border-t-4 border-primary h-[70%]"></div>
-                        <div className="flex-1 bg-primary/30 border-t-4 border-primary h-[30%]"></div>
-                        <div className="flex-1 bg-primary/30 border-t-4 border-primary h-[45%]"></div>
-                        <div className="flex-1 bg-primary/30 border-t-4 border-primary h-[95%]"></div>
-                        <div className="flex-1 bg-primary/30 border-t-4 border-primary h-[65%]"></div>
-                        <div className="flex-1 bg-primary/30 border-t-4 border-primary h-[50%]"></div>
-                        <div className="flex-1 bg-primary/30 border-t-4 border-primary h-[40%]"></div>
-                        <div className="flex-1 bg-primary/30 border-t-4 border-primary h-[75%]"></div>
-                    </div>
-                </div>
-
-                <div className="lg:col-span-4 bg-black border-4 border-border-heavy flex flex-col corner-accent corner-top-right">
-                    <div className="p-4 border-b-4 border-border-heavy bg-zinc-900">
-                        <h3 className="text-[10px] font-bold tracking-widest text-primary">ACTIVE_OPERATORS</h3>
-                    </div>
-                    <div className="flex-1 p-6 space-y-6 overflow-y-auto terminal-scroll">
-                        {operators.map((operator: any, index: number) => {
-                            const isPrimary = operator.statusColor === 'primary';
-                            const isAmber = operator.statusColor === 'amber';
-                            
-                            const borderClass = isPrimary ? 'border-primary' : isAmber ? 'border-amber-brutal' : 'border-border-heavy';
-                            const iconColorClass = isPrimary ? 'text-primary' : isAmber ? 'text-amber-brutal' : 'text-gray-500';
-                            const roleColorClass = isPrimary ? 'text-primary' : isAmber ? 'text-amber-brutal' : 'text-gray-500';
-                            const hasBottomBorder = index !== operators.length - 1;
-
-                            return (
-                                <div key={operator.id} className={`flex items-center gap-4 ${hasBottomBorder ? 'border-b border-border-heavy pb-4' : ''}`}>
-                                    <div className={`w-10 h-10 bg-zinc-800 border-2 ${borderClass} flex items-center justify-center`}>
-                                        <span className={`material-symbols-outlined ${iconColorClass}`}>{operator.icon}</span>
-                                    </div>
-                                    <div>
-                                        <div className="text-[11px] font-bold text-white">{operator.name}</div>
-                                        <div className={`text-[9px] ${roleColorClass} font-bold`}>{operator.role}</div>
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
+                <TelemetryChart />
+                <OperatorList operators={operators} />
             </div>
         </>
     );

@@ -1,8 +1,10 @@
 import React from 'react';
-import { useDashboardData } from '../../hooks/useDashboardData';
+import { useLogs } from '../../hooks/useLogs';
+import { useDiagnostics } from '../../hooks/useDiagnostics';
 
 export function Footer() {
-    const { logs, diagnostics } = useDashboardData();
+    const { items: logs } = useLogs();
+    const { items: diagnostics } = useDiagnostics();
 
     return (
         <footer className="h-32 bg-panel-industrial border-t-4 border-border-heavy grid grid-cols-12 z-40 shrink-0 overflow-hidden">
