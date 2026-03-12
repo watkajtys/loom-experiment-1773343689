@@ -19,5 +19,5 @@ test('The application boots successfully and the PocketBase client can be instan
   expect(isPbDefined).toBe(true);
 
   // Take a screenshot after verification
-  await page.screenshot({ path: 'evidence.png' });
+  await page.screenshot({ path: 'evidence_old.png' });
 });
