@@ -1,12 +1,14 @@
---- Spawned at 1773347807.343889 ---
-Killed
 
 > app@0.0.0 dev
 > vite --host
 
 
-  VITE v6.4.1  ready in 180 ms
+  VITE v6.4.1  ready in 288 ms
 
   ➜  Local:   http://localhost:5173/
-  ➜  Network: http://172.18.0.3:5173/
-Killed
+  ➜  Network: http://192.168.0.2:5173/
+9:03:22 PM [vite] (client) page reload playwright-report/index.html
+9:07:46 PM [vite] (client) page reload src/lib/pocketbase.ts
+9:08:05 PM [vite] (client) hmr update /src/App.tsx, /src/index.css
+9:08:31 PM [vite] (client) hmr update /src/App.tsx, /src/index.css
+9:08:35 PM [vite] (client) hmr update /src/App.tsx, /src/index.css
