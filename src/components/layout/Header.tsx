@@ -1,4 +1,5 @@
 import React from 'react';
+import { TABS } from '../../lib/constants';
 
 interface HeaderProps {
     activeTab: string;
@@ -32,20 +33,20 @@ export function Header({ activeTab, onTabChange }: HeaderProps) {
             <div className="flex items-center gap-4">
                 <div className="flex bg-black border-2 border-border-heavy p-0.5">
                     <button 
-                        onClick={() => onTabChange('map')}
-                        className={`px-4 py-1 text-[10px] font-bold border ${activeTab === 'map' ? 'bg-zinc-800 text-primary border-border-heavy' : 'border-transparent text-gray-500 hover:text-primary'}`}
+                        onClick={() => onTabChange(TABS.MAP)}
+                        className={`px-4 py-1 text-[10px] font-bold border ${activeTab === TABS.MAP ? 'bg-zinc-800 text-primary border-border-heavy' : 'border-transparent text-gray-500 hover:text-primary'}`}
                     >
                         MAP
                     </button>
                     <button 
-                        onClick={() => onTabChange('auth')}
-                        className={`px-4 py-1 text-[10px] font-bold border ${activeTab === 'auth' ? 'bg-zinc-800 text-primary border-border-heavy' : 'border-transparent text-gray-500 hover:text-primary'}`}
+                        onClick={() => onTabChange(TABS.AUTH)}
+                        className={`px-4 py-1 text-[10px] font-bold border ${activeTab === TABS.AUTH ? 'bg-zinc-800 text-primary border-border-heavy' : 'border-transparent text-gray-500 hover:text-primary'}`}
                     >
                         AUTH
                     </button>
                     <button 
-                        onClick={() => onTabChange('comms')}
-                        className={`px-4 py-1 text-[10px] font-bold border ${activeTab === 'comms' ? 'bg-zinc-800 text-primary border-border-heavy' : 'border-transparent text-gray-500 hover:text-primary'}`}
+                        onClick={() => onTabChange(TABS.COMMS)}
+                        className={`px-4 py-1 text-[10px] font-bold border ${activeTab === TABS.COMMS ? 'bg-zinc-800 text-primary border-border-heavy' : 'border-transparent text-gray-500 hover:text-primary'}`}
                     >
                         COMMS
                     </button>

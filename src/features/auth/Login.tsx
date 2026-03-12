@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { pb } from '../../lib/pocketbase';
+import { authService } from './authService';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
+import { TABS } from '../../lib/constants';
+import { Sidebar } from '../../components/layout/Sidebar';
+import { Footer } from '../../components/layout/Footer';
 
 export function Login() {
   const [operatorId, setOperatorId] = useState('');
@@ -17,7 +20,7 @@ export function Login() {
     setError('');
     
     try {
-      await pb.collection('users').authWithPassword(operatorId, accessKey);
+      await authService.login(operatorId, accessKey);
       navigate('/dashboard');
     } catch (err: any) {
       console.error('Authentication failed:', err);
@@ -28,7 +31,12 @@ export function Login() {
   };
 
   return (
-    <DashboardLayout activeTab="AUTH" onTabChange={() => {}}>
+    <DashboardLayout 
+        activeTab={TABS.AUTH} 
+        onTabChange={() => {}}
+        sidebar={<Sidebar hardwareToggles={[]} subProcesses={[]} />}
+        footer={<Footer logs={[]} diagnostics={[]} />}
+    >
       <div className="flex flex-col h-full items-center justify-center p-8">
         <div className="w-full max-w-2xl bg-black border-4 border-border-heavy p-8 corner-accent corner-top-left corner-top-right">
           <div className="flex justify-between items-center mb-8 border-b-4 border-border-heavy pb-4">

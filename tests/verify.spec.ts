@@ -195,3 +195,51 @@ test('Implement a protected route wrapper component.', async ({ page }) => {
   // Take a screenshot of the active feature
   await page.screenshot({ path: 'evidence_old.png' });
 });
+
+test('Login uses authService correctly', async ({ page }) => {
+  // Clear any auto-injected tokens before navigating to login
+  await page.goto('/login');
+  
+  // Make sure we're on login route
+  await expect(page).toHaveURL(/\/login/);
+  
+  // Check the title of the login page
+  await expect(page.getByText('SYS_ACCESS')).toBeVisible();
+
+  // Find inputs using the exact placeholders
+  const operatorIdInput = page.getByPlaceholder('ID_STATION_XXXX');
+  const accessKeyInput = page.getByPlaceholder('********');
+  
+  // Fill the inputs
+  await operatorIdInput.fill('test@example.com');
+  await accessKeyInput.fill('password123');
+
+  // Intercept the PocketBase auth call and mock a successful response
+  // Because the actual PocketBase may not be seeded or even have this user created.
+  await page.route('**/api/collections/users/auth-with-password', async (route) => {
+    const json = {
+      token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Im1vY2tfb2lkIiwiZXhwIjo5OTk5OTk5OTk5fQ.signature',
+      record: {
+        id: 'mock_user_id',
+        collectionId: 'users',
+        collectionName: 'users',
+        username: 'testuser',
+        verified: true,
+        emailVisibility: true,
+        email: 'test@example.com',
+        created: '2023-01-01 00:00:00.000Z',
+        updated: '2023-01-01 00:00:00.000Z',
+      }
+    };
+    await route.fulfill({ json });
+  });
+
+  // Click the submit button
+  const submitButton = page.getByRole('button', { name: 'INIT_HANDSHAKE' });
+  await submitButton.click();
+
+  // Wait for the app to redirect and initialize the dashboard
+  await expect(page.locator('#dashboard-title').first()).toBeVisible();
+  await expect(page.locator('#dashboard-title').first()).toHaveText('SECTOR_MATRIX');
+  await expect(page).toHaveURL(/\/dashboard/);
+});
