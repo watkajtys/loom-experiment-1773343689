@@ -1,12 +1,12 @@
 import React from 'react';
 import { Button } from '../ui/Button';
 import { TactileSwitch } from '../ui/TactileSwitch';
-import { useHardwareToggles } from '../../hooks/useHardwareToggles';
-import { useSubProcesses } from '../../hooks/useSubProcesses';
+import { useMockData } from '../../hooks/useMockData';
+import { MOCK_HARDWARE_TOGGLES, MOCK_SUB_PROCESSES } from '../../data/mockDashboardData';
 
 export function Sidebar() {
-    const { items: hardwareToggles } = useHardwareToggles();
-    const { items: subProcesses } = useSubProcesses();
+    const { items: hardwareToggles } = useMockData(MOCK_HARDWARE_TOGGLES);
+    const { items: subProcesses } = useMockData(MOCK_SUB_PROCESSES);
 
     return (
         <aside className="w-72 bg-panel-industrial border-r-4 border-border-heavy flex flex-col shrink-0 z-30">

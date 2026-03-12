@@ -1,14 +1,14 @@
 import React from 'react';
 import { Button } from '../../components/ui/Button';
 import { StatCard } from '../../components/ui/StatCard';
-import { useStats } from '../../hooks/useStats';
-import { useOperators } from '../../hooks/useOperators';
+import { useMockData } from '../../hooks/useMockData';
+import { MOCK_STATS, MOCK_OPERATORS } from '../../data/mockDashboardData';
 import { TelemetryChart } from './TelemetryChart';
 import { OperatorList } from './OperatorList';
 
 export function DataView() {
-    const { items: stats, loading: statsLoading } = useStats();
-    const { items: operators, loading: operatorsLoading } = useOperators();
+    const { items: stats, loading: statsLoading } = useMockData(MOCK_STATS);
+    const { items: operators, loading: operatorsLoading } = useMockData(MOCK_OPERATORS);
 
     if (statsLoading || operatorsLoading) {
         return <div className="p-8 text-primary font-mono text-sm">LOADING_MODULES...</div>;

@@ -1,10 +1,10 @@
 import React from 'react';
-import { useLogs } from '../../hooks/useLogs';
-import { useDiagnostics } from '../../hooks/useDiagnostics';
+import { useMockData } from '../../hooks/useMockData';
+import { MOCK_LOGS, MOCK_DIAGNOSTICS } from '../../data/mockDashboardData';
 
 export function Footer() {
-    const { items: logs } = useLogs();
-    const { items: diagnostics } = useDiagnostics();
+    const { items: logs } = useMockData(MOCK_LOGS);
+    const { items: diagnostics } = useMockData(MOCK_DIAGNOSTICS);
 
     return (
         <footer className="h-32 bg-panel-industrial border-t-4 border-border-heavy grid grid-cols-12 z-40 shrink-0 overflow-hidden">
