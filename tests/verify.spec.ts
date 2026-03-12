@@ -55,6 +55,49 @@ test('PocketBase auth store changes automatically update the global user context
   await page.screenshot({ path: 'evidence_old.png' });
 });
 
+test('Dashboard uses data-driven layout and component abstraction', async ({ page }) => {
+  await page.addInitScript(() => {
+    const mockModel = {
+      id: 'mock_user_id',
+      email: 'test@example.com',
+      collectionId: 'users',
+      collectionName: 'users',
+      created: '',
+      updated: '',
+    };
+    localStorage.setItem('pocketbase_auth', JSON.stringify({ token: 'mock_token', model: mockModel }));
+    if ((window as any).pb) {
+       (window as any).pb.authStore.save('mock_token', mockModel);
+    }
+  });
+
+  await page.goto('/');
+
+  // Wait for the app to initialize
+  await expect(page.locator('text=Loom Initialized')).toBeVisible();
+
+  // Navigate to dashboard via pushState
+  await page.evaluate(() => {
+    window.history.pushState({}, '', '/dashboard');
+    window.dispatchEvent(new Event('popstate'));
+  });
+  
+  // Wait for the route to load
+  await page.waitForTimeout(500);
+
+  await expect(page.locator('#dashboard-title')).toHaveText('SECTOR_MATRIX');
+
+  // Verify that the layout components exist and mock data is injected
+  await expect(page.locator('text=UPTIME_CLOCK')).toBeVisible(); // From Sidebar Layout
+  await expect(page.locator('text=ENCRYPTION_LINK')).toBeVisible(); // From Footer Layout
+  await expect(page.locator('text=GENERATE_REP')).toBeVisible(); // From DataView
+  await expect(page.locator('text=CORE_TURBINE_A')).toBeVisible(); // Data injected in Sidebar
+  await expect(page.locator('text=STABLE')).toBeVisible(); // Data injected in DataView StatCards
+
+  // Take a screenshot of the active feature
+  await page.screenshot({ path: 'evidence_old.png' });
+});
+
 test('Implement the foundational application shell and Navigation/Sidebar.', async ({ page }) => {
   // Mock auth state so we can access dashboard
   await page.addInitScript(() => {
