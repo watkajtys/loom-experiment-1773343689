@@ -1,9 +1,15 @@
 import React from 'react';
 import { Button } from '../../components/ui/Button';
 import { StatCard } from '../../components/ui/StatCard';
-import { MOCK_STATS, MOCK_OPERATORS } from '../../data/mockDashboardData';
+import { useDashboardData } from '../../hooks/useDashboardData';
 
 export function DataView() {
+    const { stats, operators, loading } = useDashboardData();
+
+    if (loading) {
+        return <div className="p-8 text-primary font-mono text-sm">LOADING_MODULES...</div>;
+    }
+
     return (
         <>
             <div className="flex flex-col md:flex-row md:items-end justify-between border-l-8 border-primary pl-8 py-4 bg-black/40 corner-accent corner-top-right">
@@ -18,10 +24,10 @@ export function DataView() {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                {MOCK_STATS.map((stat, index) => {
+                {stats.map((stat: any, index: number) => {
                     let cornerClass = '';
                     if (index === 0) cornerClass = 'corner-accent corner-bottom-left';
-                    if (index === MOCK_STATS.length - 1) cornerClass = 'corner-accent corner-bottom-right';
+                    if (index === stats.length - 1) cornerClass = 'corner-accent corner-bottom-right';
 
                     return (
                         <StatCard
@@ -70,14 +76,14 @@ export function DataView() {
                         <h3 className="text-[10px] font-bold tracking-widest text-primary">ACTIVE_OPERATORS</h3>
                     </div>
                     <div className="flex-1 p-6 space-y-6 overflow-y-auto terminal-scroll">
-                        {MOCK_OPERATORS.map((operator, index) => {
+                        {operators.map((operator: any, index: number) => {
                             const isPrimary = operator.statusColor === 'primary';
                             const isAmber = operator.statusColor === 'amber';
                             
                             const borderClass = isPrimary ? 'border-primary' : isAmber ? 'border-amber-brutal' : 'border-border-heavy';
                             const iconColorClass = isPrimary ? 'text-primary' : isAmber ? 'text-amber-brutal' : 'text-gray-500';
                             const roleColorClass = isPrimary ? 'text-primary' : isAmber ? 'text-amber-brutal' : 'text-gray-500';
-                            const hasBottomBorder = index !== MOCK_OPERATORS.length - 1;
+                            const hasBottomBorder = index !== operators.length - 1;
 
                             return (
                                 <div key={operator.id} className={`flex items-center gap-4 ${hasBottomBorder ? 'border-b border-border-heavy pb-4' : ''}`}>

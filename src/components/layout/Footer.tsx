@@ -1,7 +1,9 @@
 import React from 'react';
-import { MOCK_LOGS, MOCK_DIAGNOSTICS } from '../../data/mockDashboardData';
+import { useDashboardData } from '../../hooks/useDashboardData';
 
 export function Footer() {
+    const { logs, diagnostics } = useDashboardData();
+
     return (
         <footer className="h-32 bg-panel-industrial border-t-4 border-border-heavy grid grid-cols-12 z-40 shrink-0 overflow-hidden">
             <div className="col-span-3 border-r-4 border-border-heavy p-4 flex flex-col justify-center bg-black">
@@ -26,7 +28,7 @@ export function Footer() {
                     <span className="opacity-50">SESSION_IDX_8812</span>
                 </div>
                 <div className="flex-1 overflow-y-auto pr-4 space-y-1 terminal-scroll">
-                    {MOCK_LOGS.map((log) => {
+                    {logs.map((log: any) => {
                         const isRed = log.color === 'red';
                         const isAmber = log.color === 'amber';
                         const isPrimary = log.color === 'primary';
@@ -67,7 +69,7 @@ export function Footer() {
                     <span className="text-[9px] font-bold text-primary tabular-nums tracking-widest">34.05 / 118.24</span>
                 </div>
                 <div className="grid grid-cols-3 gap-2">
-                    {MOCK_DIAGNOSTICS.map((diag) => {
+                    {diagnostics.map((diag: any) => {
                         const isAmber = diag.color === 'amber';
                         const textClass = isAmber ? 'text-amber-brutal neon-amber-glow' : 'text-primary';
                         return (

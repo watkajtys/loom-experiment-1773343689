@@ -6,15 +6,3 @@ export const pb = new PocketBase(`http://${window.location.hostname}:8090`);
 if (typeof window !== 'undefined') {
   (window as any).pb = pb;
 }
-
-// Auto-login a mock user to skip login during Phase 1 evaluation of Core Loop / Dashboard
-if (!pb.authStore.isValid) {
-  pb.authStore.save('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Im1vY2tfb2lkIiwiZXhwIjo5OTk5OTk5OTk5fQ.signature', {
-    id: 'mock_user_id',
-    email: 'test@example.com',
-    collectionId: 'users',
-    collectionName: 'users',
-    created: new Date().toISOString(),
-    updated: new Date().toISOString(),
-  });
-}

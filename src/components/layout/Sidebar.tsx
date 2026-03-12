@@ -1,16 +1,18 @@
 import React from 'react';
 import { Button } from '../ui/Button';
 import { TactileSwitch } from '../ui/TactileSwitch';
-import { MOCK_HARDWARE_TOGGLES, MOCK_SUB_PROCESSES } from '../../data/mockDashboardData';
+import { useDashboardData } from '../../hooks/useDashboardData';
 
 export function Sidebar() {
+    const { hardwareToggles, subProcesses } = useDashboardData();
+
     return (
         <aside className="w-72 bg-panel-industrial border-r-4 border-border-heavy flex flex-col shrink-0 z-30">
             <div className="p-4 flex-1 flex flex-col gap-8 overflow-y-auto terminal-scroll">
                 <section>
                     <h4 className="text-[10px] font-bold text-primary mb-6 border-b-2 border-primary/20 pb-1">HARDWARE_TOGGLES</h4>
                     <div className="grid grid-cols-1 gap-4">
-                        {MOCK_HARDWARE_TOGGLES.map((toggle) => (
+                        {hardwareToggles.map((toggle: any) => (
                             <TactileSwitch
                                 key={toggle.id}
                                 label={toggle.label}
@@ -24,7 +26,7 @@ export function Sidebar() {
                 <section>
                     <h4 className="text-[10px] font-bold text-gray-500 mb-4 border-b-2 border-border-heavy pb-1">SUB_PROCESSES</h4>
                     <div className="flex flex-col gap-1">
-                        {MOCK_SUB_PROCESSES.map((process) => (
+                        {subProcesses.map((process: any) => (
                             <Button key={process.id} variant="sidebar" icon={process.icon}>
                                 {process.label}
                             </Button>
