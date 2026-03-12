@@ -11,9 +11,9 @@ export default {
           "primary": "#00f3ff",
           "amber-brutal": "#ffb800",
           "red-brutal": "#ff003c",
-          "background-stark": "#050505",
-          "panel-industrial": "#0f0f0f",
-          "border-heavy": "#222222"
+          "background-stark": "#020202",
+          "panel-industrial": "#0a0a0a",
+          "border-heavy": "#2a2a2a"
       },
       fontFamily: {
           "mono": ["Space Mono", "monospace"]
