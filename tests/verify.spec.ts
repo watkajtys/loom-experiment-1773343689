@@ -32,6 +32,8 @@ test('PocketBase auth store changes automatically update the global user context
   await expect(page.locator('#auth-status')).toHaveText('Not logged in');
 
   // Simulate an auth state change via window.pb
+  // In a real scenario we could log in, but for mocking we update the local storage directly
+  // or use the exposed window.pb
   await page.evaluate(() => {
     // Create a mock model object
     const mockModel = {
@@ -51,4 +53,78 @@ test('PocketBase auth store changes automatically update the global user context
 
   // Take a screenshot of the active feature
   await page.screenshot({ path: 'evidence_old.png' });
+});
+
+test('Implement a protected route wrapper component.', async ({ page }) => {
+  // Try accessing dashboard without auth
+  await page.goto('/dashboard');
+  
+  // Verify redirect to login
+  await expect(page.locator('text=Login')).toBeVisible();
+  await expect(page).toHaveURL(/\/login/);
+
+  // Simulate an auth state change via window.pb
+  await page.evaluate(() => {
+    // Create a mock model object
+    const mockModel = {
+      id: 'mock_user_id',
+      email: 'test@example.com',
+      collectionId: 'users',
+      collectionName: 'users',
+      created: '',
+      updated: '',
+    };
+    // Save to the auth store
+    (window as any).pb.authStore.save('mock_token', mockModel);
+    
+    // In pocketbase > 0.16.x authStore.save also stores it in local storage.
+    // However, since we're calling page.goto immediately after, it's possible window.pb instance is re-initialized 
+    // and loses the in-memory state if we only did it via evaluate on the old page.
+  });
+  
+  // Wait a bit for auth state to propagate in React
+  await page.waitForTimeout(500);
+
+  // Instead of page.goto (which reloads the whole app and potentially clears our mock state before it's persisted in local storage or read properly),
+  // let's just click a link to dashboard or update the URL without reload, or set localstorage directly before goto.
+  // The safest way is to set localStorage so when page.goto happens, the initialization picks it up.
+  await page.evaluate(() => {
+    const mockModel = {
+      id: 'mock_user_id',
+      email: 'test@example.com',
+      collectionId: 'users',
+      collectionName: 'users',
+      created: '',
+      updated: '',
+    };
+    localStorage.setItem('pocketbase_auth', JSON.stringify({ token: 'mock_token', model: mockModel }));
+    // We also forcefully set authStore manually to ensure React context doesn't race against redirect.
+    if ((window as any).pb) {
+       (window as any).pb.authStore.save('mock_token', mockModel);
+    }
+  });
+
+  // Wait for the local storage event or PB update to be picked up
+  await page.waitForTimeout(500);
+
+  // Go to home page to make sure context initializes with the token
+  await page.goto('/');
+  await expect(page.locator('#auth-status')).toHaveText('Logged in as test@example.com');
+  
+  // Navigate to dashboard with auth, but we should use click or evaluate instead of page.goto since pocketbase JS SDK sets AuthStore lazily or loses it upon hard navigation if local storage isn't strictly synchronized.
+  await page.evaluate(() => {
+    window.history.pushState({}, '', '/dashboard');
+    window.dispatchEvent(new Event('popstate'));
+  });
+  
+  // Wait for the route to load before asserting the text
+  await page.waitForTimeout(500);
+
+  // Verify dashboard is accessible
+  await expect(page.locator('#dashboard-title')).toBeVisible();
+  await expect(page.locator('#dashboard-title')).toHaveText('Dashboard');
+  await expect(page).toHaveURL(/\/dashboard/);
+
+  // Take a screenshot of the active feature
+  await page.screenshot({ path: 'evidence.png' });
 });
