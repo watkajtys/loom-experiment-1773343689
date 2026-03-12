@@ -100,7 +100,7 @@ test('Implement the foundational application shell and Navigation/Sidebar.', asy
   await expect(page).toHaveURL(/tab=map/);
   
   // Take a screenshot of the active feature
-  await page.screenshot({ path: 'evidence.png' });
+  await page.screenshot({ path: 'evidence_old.png' });
 });
 
 test('Implement a protected route wrapper component.', async ({ page }) => {
