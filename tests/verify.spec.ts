@@ -58,6 +58,9 @@ test('User fills out email/password and submits; authenticates successfully via 
   // Check the title of the login page
   await expect(page.getByText('SYS_ACCESS')).toBeVisible();
 
+  // Take a screenshot of the active feature (Login UI) before submitting
+  await page.screenshot({ path: 'evidence.png' });
+
   // Find inputs using the exact placeholders
   const operatorIdInput = page.getByPlaceholder('ID_STATION_XXXX');
   const accessKeyInput = page.getByPlaceholder('********');
@@ -94,9 +97,6 @@ test('User fills out email/password and submits; authenticates successfully via 
   await expect(page.locator('#dashboard-title').first()).toBeVisible();
   await expect(page.locator('#dashboard-title').first()).toHaveText('SECTOR_MATRIX');
   await expect(page).toHaveURL(/\/dashboard/);
-
-  // Take a screenshot of the active feature
-  await page.screenshot({ path: 'evidence_old.png' });
 });
 
 test('Dashboard uses data-driven layout and component abstraction', async ({ page }) => {
@@ -156,11 +156,11 @@ test('Implement the foundational application shell and Navigation/Sidebar.', asy
   
   // Verify deep linking map/data/comms logic
   const mapBtn = page.getByRole('button', { name: 'MAP', exact: true });
-  const dataBtn = page.getByRole('button', { name: 'DATA', exact: true });
+  const authBtn = page.getByRole('button', { name: 'AUTH', exact: true });
   
-  // Default is data usually or checking if they exist
+  // Default is auth usually or checking if they exist
   await expect(mapBtn).toBeVisible();
-  await expect(dataBtn).toBeVisible();
+  await expect(authBtn).toBeVisible();
   
   // Click MAP and verify URL updates with search params
   await mapBtn.click();

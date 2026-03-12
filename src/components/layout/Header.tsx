@@ -38,10 +38,10 @@ export function Header({ activeTab, onTabChange }: HeaderProps) {
                         MAP
                     </button>
                     <button 
-                        onClick={() => onTabChange('data')}
-                        className={`px-4 py-1 text-[10px] font-bold border ${activeTab === 'data' ? 'bg-zinc-800 text-primary border-border-heavy' : 'border-transparent text-gray-500 hover:text-primary'}`}
+                        onClick={() => onTabChange('auth')}
+                        className={`px-4 py-1 text-[10px] font-bold border ${activeTab === 'auth' ? 'bg-zinc-800 text-primary border-border-heavy' : 'border-transparent text-gray-500 hover:text-primary'}`}
                     >
-                        DATA
+                        AUTH
                     </button>
                     <button 
                         onClick={() => onTabChange('comms')}

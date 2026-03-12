@@ -7,7 +7,7 @@ import { CommsView } from './features/dashboard/CommsView';
 
 export default function Dashboard() {
     const [searchParams, setSearchParams] = useSearchParams();
-    const activeTab = searchParams.get('tab') || 'data';
+    const activeTab = searchParams.get('tab') || 'auth';
 
     const handleTabChange = (tab: string) => {
         setSearchParams({ tab });
