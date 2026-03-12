@@ -55,6 +55,54 @@ test('PocketBase auth store changes automatically update the global user context
   await page.screenshot({ path: 'evidence_old.png' });
 });
 
+test('Implement the foundational application shell and Navigation/Sidebar.', async ({ page }) => {
+  // Mock auth state so we can access dashboard
+  await page.addInitScript(() => {
+    const mockModel = {
+      id: 'mock_user_id',
+      email: 'test@example.com',
+      collectionId: 'users',
+      collectionName: 'users',
+      created: '',
+      updated: '',
+    };
+    localStorage.setItem('pocketbase_auth', JSON.stringify({ token: 'mock_token', model: mockModel }));
+    if ((window as any).pb) {
+       (window as any).pb.authStore.save('mock_token', mockModel);
+    }
+  });
+
+  await page.goto('/');
+
+  // Navigate to dashboard via pushState
+  await page.evaluate(() => {
+    window.history.pushState({}, '', '/dashboard');
+    window.dispatchEvent(new Event('popstate'));
+  });
+  
+  // Wait for the app to initialize and ensure we're on dashboard
+  await expect(page).toHaveURL(/\/dashboard/);
+  
+  // Verify foundational shell components
+  await expect(page.locator('text=CONSOLE_V4.0_SHELL')).toBeVisible();
+  await expect(page.locator('text=SECTOR_MATRIX')).toBeVisible();
+  
+  // Verify deep linking map/data/comms logic
+  const mapBtn = page.getByRole('button', { name: 'MAP', exact: true });
+  const dataBtn = page.getByRole('button', { name: 'DATA', exact: true });
+  
+  // Default is data usually or checking if they exist
+  await expect(mapBtn).toBeVisible();
+  await expect(dataBtn).toBeVisible();
+  
+  // Click MAP and verify URL updates with search params
+  await mapBtn.click();
+  await expect(page).toHaveURL(/tab=map/);
+  
+  // Take a screenshot of the active feature
+  await page.screenshot({ path: 'evidence.png' });
+});
+
 test('Implement a protected route wrapper component.', async ({ page }) => {
   // Try accessing dashboard without auth
   await page.goto('/dashboard');
@@ -122,7 +170,7 @@ test('Implement a protected route wrapper component.', async ({ page }) => {
 
   // Verify dashboard is accessible
   await expect(page.locator('#dashboard-title')).toBeVisible();
-  await expect(page.locator('#dashboard-title')).toHaveText('Dashboard');
+  await expect(page.locator('#dashboard-title')).toHaveText('SECTOR_MATRIX');
   await expect(page).toHaveURL(/\/dashboard/);
 
   // Take a screenshot of the active feature
