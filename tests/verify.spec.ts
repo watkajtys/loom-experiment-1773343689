@@ -126,5 +126,5 @@ test('Implement a protected route wrapper component.', async ({ page }) => {
   await expect(page).toHaveURL(/\/dashboard/);
 
   // Take a screenshot of the active feature
-  await page.screenshot({ path: 'evidence.png' });
+  await page.screenshot({ path: 'evidence_old.png' });
 });
