@@ -41,7 +41,7 @@ test('PocketBase auth store changes automatically update the global user context
       updated: '',
     };
     // Save to the auth store
-    (window as any).pb.authStore.save('mock_token', mockModel);
+    (window as any).pb.authStore.save('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Im1vY2tfb2lkIiwiZXhwIjo5OTk5OTk5OTk5fQ.signature', mockModel);
   });
 
   // Take a screenshot of the active feature
