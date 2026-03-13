@@ -258,12 +258,15 @@ test('Implement a protected route wrapper component.', async ({ page }) => {
   await page.screenshot({ path: 'evidence_old.png' });
 });
 
-test('Login uses authService correctly', async ({ page }) => {
+test('Login uses authService correctly and respects DashboardLayout', async ({ page }) => {
   // Clear any auto-injected tokens before navigating to login
   await page.goto('/login');
   
   // Make sure we're on login route
   await expect(page).toHaveURL(/\/login/);
+
+  // Layout should be visible
+  await expect(page.locator('text=CONSOLE_V4.0_SHELL')).toBeVisible();
   
   // Check the title of the login page
   await expect(page.getByText('SYS_ACCESS')).toBeVisible();

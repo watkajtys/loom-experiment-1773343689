@@ -1,4 +1,5 @@
 import React from 'react';
+import { getStatusThemeClasses } from '../../lib/theme';
 
 interface TactileSwitchProps {
     label: string;
@@ -8,11 +9,7 @@ interface TactileSwitchProps {
 }
 
 export function TactileSwitch({ label, statusLabel, statusColor, isActive }: TactileSwitchProps) {
-    const isAmber = statusColor === 'amber';
-    const isPrimary = statusColor === 'primary';
-    const indicatorColor = isAmber ? 'bg-amber-brutal' : isPrimary ? 'bg-primary' : 'bg-zinc-800';
-    const textColor = isAmber ? 'text-amber-brutal' : isPrimary ? 'text-primary' : 'text-gray-600';
-    const neonClass = isAmber ? 'neon-amber-glow' : isPrimary ? 'neon-cyan-glow' : '';
+    const { indicatorColor, textColor, neonClass } = getStatusThemeClasses(statusColor);
 
     return (
         <div className="bg-black border-2 border-border-heavy p-4 tactile-switch">

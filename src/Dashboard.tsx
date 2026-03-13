@@ -3,10 +3,11 @@ import { useSearchParams } from 'react-router-dom';
 import { DataView } from './features/dashboard/DataView';
 import { MapView } from './features/dashboard/MapView';
 import { CommsView } from './features/dashboard/CommsView';
+import { DashboardLayout } from './components/layout/DashboardLayout';
 import { TABS, TabKey } from './lib/constants';
 
 export default function Dashboard() {
-    const [searchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
     const activeTab = searchParams.get('tab') as TabKey || TABS.AUTH;
 
     let ViewComponent = DataView;
@@ -16,7 +17,13 @@ export default function Dashboard() {
         ViewComponent = CommsView;
     }
 
+    const handleTabChange = (tab: string) => {
+        setSearchParams({ tab });
+    };
+
     return (
-        <ViewComponent />
+        <DashboardLayout activeTab={activeTab} onTabChange={handleTabChange}>
+            <ViewComponent />
+        </DashboardLayout>
     );
 }

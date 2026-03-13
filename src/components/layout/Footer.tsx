@@ -1,6 +1,7 @@
 import React from 'react';
 import { useMockData } from '../../hooks/useMockData';
 import { MOCK_LOGS, MOCK_DIAGNOSTICS } from '../../data/mockDashboardData';
+import { getLogThemeClasses, getStatusThemeClasses } from '../../lib/theme';
 
 export function Footer() {
     const { items: logs } = useMockData(MOCK_LOGS);
@@ -31,28 +32,7 @@ export function Footer() {
                 </div>
                 <div className="flex-1 overflow-y-auto pr-4 space-y-1 terminal-scroll">
                     {logs.map((log: any) => {
-                        const isRed = log.color === 'red';
-                        const isAmber = log.color === 'amber';
-                        const isPrimary = log.color === 'primary';
-                        
-                        let borderClass = 'border-zinc-800';
-                        let bgClass = '';
-                        let textClass = 'text-primary';
-                        let msgClass = 'text-gray-300';
-
-                        if (isRed) {
-                            borderClass = 'border-red-brutal';
-                            bgClass = 'bg-red-brutal/5';
-                            textClass = 'text-red-brutal';
-                            msgClass = 'text-red-brutal';
-                        } else if (isAmber) {
-                            borderClass = 'border-amber-brutal';
-                            bgClass = 'bg-amber-brutal/5';
-                            textClass = 'text-amber-brutal';
-                            msgClass = 'text-amber-brutal';
-                        } else if (isPrimary) {
-                            borderClass = 'border-primary';
-                        }
+                        const { borderClass, bgClass, textClass, msgClass } = getLogThemeClasses(log.color);
 
                         return (
                             <div key={log.id} className={`flex gap-4 border-l-2 ${borderClass} pl-2 ${bgClass}`}>
@@ -72,12 +52,12 @@ export function Footer() {
                 </div>
                 <div className="grid grid-cols-3 gap-2">
                     {diagnostics.map((diag: any) => {
-                        const isAmber = diag.color === 'amber';
-                        const textClass = isAmber ? 'text-amber-brutal neon-amber-glow' : 'text-primary';
+                        const { textColor, neonClass } = getStatusThemeClasses(diag.color);
+                        const finalClass = diag.color === 'amber' ? `${textColor} ${neonClass}` : 'text-primary';
                         return (
                             <div key={diag.id} className="bg-zinc-900 border-2 border-border-heavy p-2 flex flex-col items-center">
                                 <span className="text-[8px] text-gray-600 font-bold">{diag.label}</span>
-                                <span className={`text-xs font-bold ${textClass}`}>{diag.value}</span>
+                                <span className={`text-xs font-bold ${finalClass}`}>{diag.value}</span>
                             </div>
                         );
                     })}

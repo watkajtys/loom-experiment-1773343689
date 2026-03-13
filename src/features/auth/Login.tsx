@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authService } from './authService';
+import { DashboardLayout } from '../../components/layout/DashboardLayout';
+import { TABS } from '../../lib/constants';
 
 export function Login() {
   const [operatorId, setOperatorId] = useState('');
@@ -27,8 +29,9 @@ export function Login() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start p-8 gap-8 w-full">
-      {/* SYS_ACCESS BLOCK */}
+    <DashboardLayout activeTab={TABS.AUTH} onTabChange={(tab) => navigate(`/dashboard?tab=${tab}`)}>
+      <div className="flex flex-col items-center justify-start p-8 gap-8 w-full">
+        {/* SYS_ACCESS BLOCK */}
       <div className="w-full max-w-4xl bg-black border-4 border-border-heavy p-8 corner-accent corner-top-left corner-top-right">
         <div className="flex justify-between items-center mb-8 border-b-4 border-border-heavy pb-4">
           <h2 className="text-3xl font-bold tracking-[0.2em] text-primary">SYS_ACCESS</h2>
@@ -40,7 +43,7 @@ export function Login() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-end">
           <div className="space-y-4 lg:col-span-1">
             <div className="bg-primary/10 border-l-4 border-primary p-4">
-              <p className="text-[10px] text-primary font-bold">PROVIDE OPERATOR CREDENTIALS TO INITIALIZE HARDWARE INTERFACE. IF NEW UNIT: PROCEED TO GRID_ENROLLMENT BELOW.</p>
+              <p className="text-[10px] text-primary font-bold">PROVIDE OPERATOR CREDENTIALS TO INITIALIZE HARDWARE INTERFACE.</p>
             </div>
             {error && (
               <div className="bg-red-brutal/10 border-l-4 border-red-brutal p-4 flex items-center gap-3">
@@ -93,7 +96,8 @@ export function Login() {
             </form>
           </div>
         </div>
+        </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 }

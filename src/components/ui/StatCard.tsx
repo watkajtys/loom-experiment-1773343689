@@ -1,4 +1,5 @@
 import React from 'react';
+import { getStatusThemeClasses } from '../../lib/theme';
 
 interface StatCardProps {
     label: string;
@@ -11,11 +12,7 @@ interface StatCardProps {
 }
 
 export function StatCard({ label, statusLabel, statusColor, value, unit, percentage, cornerClass = '' }: StatCardProps) {
-    const isAmber = statusColor === 'amber';
-    const textColor = isAmber ? 'text-amber-brutal' : 'text-primary';
-    const neonClass = isAmber ? 'neon-amber-glow' : 'neon-cyan-glow';
-    const bgClass = isAmber ? 'bg-amber-brutal' : 'bg-primary';
-    const bgOpacityClass = isAmber ? 'bg-amber-brutal/10' : 'bg-primary/10';
+    const { textColor, neonClass, bgClass, bgOpacityClass } = getStatusThemeClasses(statusColor);
 
     return (
         <div className={`bg-black border-4 border-border-heavy p-6 ${cornerClass}`}>
