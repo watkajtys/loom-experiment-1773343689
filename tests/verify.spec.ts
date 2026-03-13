@@ -158,7 +158,7 @@ test('Clarify visual state of hardware toggles in sidebar', async ({ page }) => 
   await expect(page.locator('text=HARDWARE_TOGGLES')).toBeVisible();
 
   // Take a screenshot after verification
-  await page.screenshot({ path: 'evidence.png' });
+  await page.screenshot({ path: 'evidence_old.png' });
 });
 
 test('Dashboard uses data-driven layout and component abstraction', async ({ page }) => {
