@@ -127,15 +127,15 @@ test('Clarify visual state of hardware toggles in sidebar', async ({ page }) => 
   const activeSlider = activeToggle.locator('.w-12.h-6.bg-zinc-900');
   await expect(activeSlider).toBeVisible();
   
-  // Verify it has the new specific structural classes indicating left=off, right=on
-  // Based on our code: isActive ? 'right-0 border-l-2' : 'left-0 border-r-2'
+  // Verify it has the new specific structural classes indicating left=on, right=off
+  // Based on our code: isActive ? 'left-0 border-r-2' : 'right-0 border-l-2'
   const activeHandle = activeSlider.locator('> div:nth-child(2)');
-  await expect(activeHandle).toHaveClass(/right-0/);
+  await expect(activeHandle).toHaveClass(/left-0/);
 
   const inactiveToggle = page.locator('.tactile-switch').filter({ hasText: 'VALVE_SYSTEM_B' });
   const inactiveSlider = inactiveToggle.locator('.w-12.h-6.bg-zinc-900');
   const inactiveHandle = inactiveSlider.locator('> div:nth-child(2)');
-  await expect(inactiveHandle).toHaveClass(/left-0/);
+  await expect(inactiveHandle).toHaveClass(/right-0/);
 
   // Check if GRID_ENROLLMENT_V3.2 fluff was removed from Login
   await page.goto('/login');
