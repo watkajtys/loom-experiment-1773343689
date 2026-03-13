@@ -3,11 +3,6 @@ import { test, expect } from '@playwright/test';
 test('App initializes correctly', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('text=SYS_ACCESS')).toBeVisible();
-  // Verify Registration block is present
-  await expect(page.locator('text=GRID_ENROLLMENT_V3.2')).toBeVisible();
-  await expect(page.locator('text=ID_VALIDATION')).toBeVisible();
-  await expect(page.locator('text=AUTH_LEVEL_SET')).toBeVisible();
-  await expect(page.locator('text=PROVISION_INIT')).toBeVisible();
 });
 
 test('The application boots successfully and the PocketBase client can be instantiated globally without errors.', async ({ page }) => {
@@ -102,6 +97,68 @@ test('User fills out email/password and submits; authenticates successfully via 
   await expect(page.locator('#dashboard-title').first()).toBeVisible();
   await expect(page.locator('#dashboard-title').first()).toHaveText('SECTOR_MATRIX');
   await expect(page).toHaveURL(/\/dashboard/);
+});
+
+test('Clarify visual state of hardware toggles in sidebar', async ({ page }) => {
+  await page.goto('/');
+
+  // Mock authentication and navigate to dashboard
+  await page.evaluate(() => {
+    (window as any).pb.authStore.save('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Im1vY2tfb2lkIiwiZXhwIjo5OTk5OTk5OTk5fQ.signature', {
+      id: 'mock_user_id',
+      email: 'test@example.com',
+      collectionId: 'users',
+      collectionName: 'users',
+    });
+    window.history.pushState({}, '', '/dashboard');
+    window.dispatchEvent(new Event('popstate'));
+  });
+
+  await page.waitForTimeout(500);
+
+  // Wait for the route to load and sidebar to be visible
+  await expect(page.locator('text=HARDWARE_TOGGLES')).toBeVisible();
+
+  // Check the specific hardware toggles
+  const activeToggle = page.locator('.tactile-switch').filter({ hasText: 'CORE_TURBINE_A' });
+  await expect(activeToggle).toBeVisible();
+
+  // Find the slider mechanism
+  const activeSlider = activeToggle.locator('.w-12.h-6.bg-zinc-900');
+  await expect(activeSlider).toBeVisible();
+  
+  // Verify it has the new specific structural classes indicating left=off, right=on
+  // Based on our code: isActive ? 'right-0 border-l-2' : 'left-0 border-r-2'
+  const activeHandle = activeSlider.locator('> div:nth-child(2)');
+  await expect(activeHandle).toHaveClass(/right-0/);
+
+  const inactiveToggle = page.locator('.tactile-switch').filter({ hasText: 'VALVE_SYSTEM_B' });
+  const inactiveSlider = inactiveToggle.locator('.w-12.h-6.bg-zinc-900');
+  const inactiveHandle = inactiveSlider.locator('> div:nth-child(2)');
+  await expect(inactiveHandle).toHaveClass(/left-0/);
+
+  // Check if GRID_ENROLLMENT_V3.2 fluff was removed from Login
+  await page.goto('/login');
+  await expect(page.locator('text=SYS_ACCESS')).toBeVisible();
+  await expect(page.locator('text=GRID_ENROLLMENT_V3.2')).not.toBeVisible();
+
+  // Go back to root / dashboard and take a screenshot of the root layout sidebar
+  await page.goto('/');
+  await page.evaluate(() => {
+    (window as any).pb.authStore.save('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Im1vY2tfb2lkIiwiZXhwIjo5OTk5OTk5OTk5fQ.signature', {
+      id: 'mock_user_id',
+      email: 'test@example.com',
+      collectionId: 'users',
+      collectionName: 'users',
+    });
+    window.history.pushState({}, '', '/dashboard');
+    window.dispatchEvent(new Event('popstate'));
+  });
+  await page.waitForTimeout(500);
+  await expect(page.locator('text=HARDWARE_TOGGLES')).toBeVisible();
+
+  // Take a screenshot after verification
+  await page.screenshot({ path: 'evidence.png' });
 });
 
 test('Dashboard uses data-driven layout and component abstraction', async ({ page }) => {
