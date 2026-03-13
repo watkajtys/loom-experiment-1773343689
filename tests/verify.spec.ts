@@ -3,6 +3,11 @@ import { test, expect } from '@playwright/test';
 test('App initializes correctly', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('text=SYS_ACCESS')).toBeVisible();
+  // Verify Registration block is present
+  await expect(page.locator('text=GRID_ENROLLMENT_V3.2')).toBeVisible();
+  await expect(page.locator('text=ID_VALIDATION')).toBeVisible();
+  await expect(page.locator('text=AUTH_LEVEL_SET')).toBeVisible();
+  await expect(page.locator('text=PROVISION_INIT')).toBeVisible();
 });
 
 test('The application boots successfully and the PocketBase client can be instantiated globally without errors.', async ({ page }) => {
